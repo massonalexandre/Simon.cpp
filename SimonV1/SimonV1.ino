@@ -23,7 +23,7 @@ class Touche {
     
   }
 
-  void play(){
+  void play() const {
     digitalWrite(Led, HIGH);
     tone(Buzzer, Song);
     delay(250);
@@ -53,18 +53,20 @@ Touche touches[] = {
 };
 
 int ToucheAppuie(Touche* touches, int numTouches) {
-    unsigned long startMillis = millis(); // Temps de démarrage
-    bool sortie = 1;
-  while (((millis() - startMillis )< 3000) && sortie) { // Attendre 3 secondes
-  for (int i = 0; i < numTouches; i++) {
-    if (touches[i].appuie()) {
-      sortie = 0;
-      return i; // Renvoie l'indice de la première touche appuyée
+  unsigned long startMillis = millis(); // Temps de démarrage
+  int sortie = -1; // Si aucune touche n'est appuyée, renvoie -1
+
+  while ((millis() - startMillis) < 3000 && sortie==-1) { // Attendre 3 secondes
+    for (int i = 0; i < numTouches; i++) {
+      if (touches[i].appuie()) {
+        sortie = i; // Renvoie l'indice de la première touche appuyée
+      }
     }
   }
-  }
-  return -1; // Si aucune touche n'est appuyée, renvoie -1
+  return sortie;
+  
 }
+
 
 void genererSequence(std::vector<Touche>& listeTouches, Touche* touches, int nbTouches, int vitesse) { //vitesse de 500 = normal
   int randomIndex = random(0, nbTouches);
@@ -76,6 +78,31 @@ void genererSequence(std::vector<Touche>& listeTouches, Touche* touches, int nbT
   }
 }
 
+bool verifierSequence(const std::vector<Touche>& listeTouches, Touche* touches, int nbTouches) {
+  for (int i = 0; i < listeTouches.size(); i++) {
+    int t = ToucheAppuie(touches, nbTouches) ;
+    if (t == -1 ){ 
+      tone(D6, 200);
+      delay(5000);
+      noTone(D6);
+      return false; 
+    }
+    else if (touches[t] == listeTouches[i] ) {
+      listeTouches[i].play();
+
+      
+    } else {
+      tone(D6, 200);
+      delay(2000);
+      noTone(D6);
+      return false; 
+    }
+  }
+  return true; 
+  
+}
+
+
 
 std::vector<Touche> listeTouches;
 
@@ -83,23 +110,8 @@ void setup() {}
 
 void loop() {
 
-
 genererSequence(listeTouches, touches, 3, 500);
-
-
-
-
-  delay(2000); // attente entre chaque sequence
-
-
-  // if (Bleu.appuie()) {
-  //   Bleu.play();
-  // }
-  // if (Rouge.appuie()) {
-  //   Rouge.play();
-  // }
-  // if (Jaune.appuie()) {
-  //   Jaune.play();
-  // }
+verifierSequence(listeTouches,touches, 3);
+delay(2000); // attente entre chaque sequence
 
 }

@@ -1,13 +1,13 @@
 #include "Simon.h"
 
-Simon Partie;
+Simon simon;
 
 void setup() 
 {
-  Partie.init();
+  simon.init();
 }
 
 void loop() 
 {
-  Partie.run();
+  simon.run();
 }

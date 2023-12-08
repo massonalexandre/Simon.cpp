@@ -1,43 +1,38 @@
-#ifndef SIMON_H_
-#define SIMON_H_
+#ifndef SIMONFACILE_H_
+#define SIMONFACILE_H_
 
 #include <Arduino.h>
+#include "Simon.h"
 #include "Touche.h"
 #include "TM1637.h"
 #include <vector>
 
 /**
-  * @class Simon
-  * @brief Classe Simon 
+  * @class SimonFacile
+  * @brief Classe SimonFacile : mode de jeu Facile de notre Simon 
 */    
-class Simon
+class SimonFacile : public Simon
 {
-  protected :
-    std::vector<Touche> ListeTouche;
-    std::vector<Touche> Sequence;
-    std::vector<Simon> ListeMode;
-    
+  private :
+    int Speed;
+    int ScoreMax;
+
   public :
     /**
-     * @fn Simon();
-     * @brief Constructeur par defaut
+     * @fn SimonFacile();
+     * @brief Constructeur mode facile
     */    
-    Simon();
+    SimonFacile();
     /**
-     * @fn Simon();
+     * @fn SimonFacile();
      * @brief Destructeur
     */    
-    ~Simon();    
-    /**
-     * @fn void init(void)
-     * @brief Fonction d'initialisation de notre Simon
+    ~SimonFacile();    
+        /**
+     * @fn void Partie(void)
+     * @brief Fonction de lancement de notre Simon en mode Facile
     */
-    void init(void);
-    /**
-     * @fn void run(void)
-     * @brief Fonction de lancement de notre Simon
-    */
-    void run(void);
+    void Partie(void);
     /**
      * @fn Disco();
      * @brief Animation d'attente
@@ -53,7 +48,7 @@ class Simon
      * @brief Supprime la séquence
     */    
     virtual void FlushSequence();
-    /**
+        /**
      * @fn WhichIsPress();
      * @brief Indique quelle touche vient d'être pressée
     */    

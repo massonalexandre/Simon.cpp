@@ -27,6 +27,11 @@ class Touche
      * @fn play();
      * @brief  Joue la lumière et le son de la touche
     */  
+    void playSong() const;
+    /**
+     * @fn play();
+     * @brief  Joue le son de la touche
+    */  
     void play() const;
      /**
      * @fn light();

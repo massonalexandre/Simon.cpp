@@ -28,6 +28,13 @@ void Touche::play() const
     noTone(Buzzer);
 }
 
+void Touche::playSong() const
+{
+    tone(Buzzer, Song);
+    delay(250);
+    noTone(Buzzer);
+}
+
 void Touche::light()
 {
     digitalWrite(Led, HIGH);

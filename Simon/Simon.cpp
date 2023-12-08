@@ -4,15 +4,17 @@
  * @brief Fichier source de notre Simon
  *********************************************************************/
 
-#include <Arduino.h>
-#include "SimonFacile.h"
 #include "Simon.h"
+#include "TM1637.h"
+#include <Arduino.h>
+#include "Touche.h"
 
 
 Simon::Simon()
 {
-  // Code
-  ; 
+    this->ScoreMaxFacile = 0;
+    this->ScoreMaxModere = 0;
+    this->ScoreMaxExpert = 0;
 }
   
 Simon::~Simon()
@@ -30,23 +32,169 @@ void Simon::init(void)
     ListeTouche.push_back(Bleu);
     ListeTouche.push_back(Rouge);
     ListeTouche.push_back(Jaune);
-
-    SimonFacile JeuBleuFacile;
-    SimonFacile JeuRougeFacile;
-    SimonFacile JeuJauneFacile;
-
-    ListeMode.push_back(JeuBleuFacile);
 }
+
 
 void Simon::run(void)
 {
-    int Chosen = -1;
-  
-    Chosen = WhichIsPress(20000);
+    int Jeu = 1;
 
-    if (Chosen == 0)
+    while (Jeu)
     {
-      //JeuBleuFacile.Partie();
+      switch (WhichIsPress(30000))
+      {
+        case 0:
+          Facile(1,1000,2000);
+          Jeu = 0;
+          break;
+        case 1:
+          Modere(2,200,1000);
+          Jeu = 0;
+          break;
+        case 2:
+          Expert(3,200,2000);
+          Jeu = 0;
+          break;
+        default:
+          Jeu = 1;
+          break;
+      }
+    }
+}
+
+void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
+{
+    TM1637 Segment(D6,D7);
+    Segment.init();
+    Segment.set(BRIGHT_TYPICAL);
+
+    int Test = 1;
+
+    Disco(nbTours, 0.5*Speed);
+    delay(1000);
+
+    while(Test)
+    {
+        GenerateSequence(Speed,0);
+        Test = CheckSequence(ErrorDelay);
+        if (Test == 1)
+        {
+          Segment.displayNum(this->ScoreMaxFacile+Sequence.size());
+        }
+        delay(1000);
+    }
+    if (this->ScoreMaxFacile < 100*(Sequence.size()-1))
+    {
+      this->ScoreMaxFacile = 100*(Sequence.size()-1);
+    }
+    FlushSequence();
+}
+
+void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
+{
+    TM1637 Segment(D6,D7);
+    Segment.init();
+    Segment.set(BRIGHT_TYPICAL);
+
+    int Test = 1;
+
+    Disco(nbTours, 0.5*Speed);
+    delay(1000);
+
+    while(Test)
+    {
+        GenerateSequence(Speed,0);
+        Test = CheckSequence(ErrorDelay);
+        if (Test == 1)
+        {
+          Segment.displayNum(this->ScoreMaxModere+Sequence.size());
+        }
+        delay(1000);
+    }
+    if (this->ScoreMaxModere < 100*(Sequence.size()-1))
+    {
+      this->ScoreMaxModere = 100*(Sequence.size()-1);
+    }
+    FlushSequence();
+}
+
+void Simon::Expert(int nbTours, int Speed, int ErrorDelay)
+{
+    TM1637 Segment(D6,D7);
+    Segment.init();
+    Segment.set(BRIGHT_TYPICAL);
+
+    int Test = 1;
+
+    Disco(nbTours, 0.5*Speed);
+    delay(1000);
+
+    for (int i=0;i<ListeTouche.size();i++)
+    {
+      ListeTouche[i].play();
+      delay(500);
+    }
+
+    while(Test)
+    {
+        GenerateSequence(Speed,1);
+        Test = CheckSequence(ErrorDelay);
+        if (Test == 1)
+        {
+          Segment.displayNum(this->ScoreMaxExpert+Sequence.size());
+        }
+        delay(1000);
+    }
+
+    if (this->ScoreMaxExpert < 100*(Sequence.size()-1))
+    {
+      this->ScoreMaxExpert = 100*(Sequence.size()-1);
+    }
+
+    for (int i=0;i<Sequence.size();i++)
+    {
+      Sequence[i].play();
+      delay(Speed);
+    }
+    FlushSequence();
+}
+
+void Simon::Disco(int nbTours, int Speed)
+{
+    for (int i=0;i<nbTours;i++)
+    {
+        for (int j=0;j<ListeTouche.size();j++)
+        {
+            ListeTouche[j].light();
+            delay(Speed);
+        }
+    }
+}
+
+void Simon::GenerateSequence(int Speed, int Expert)
+{
+    int RandomIndex = random(0, ListeTouche.size());
+    Sequence.push_back(ListeTouche[RandomIndex]);
+
+    for (int i=0;i<Sequence.size();i++)
+    {
+      if (Expert == 0)
+      {
+        Sequence[i].play();
+      }
+      else
+      {
+        Sequence[i].playSong();
+      }
+        delay(Speed);
+    }
+}
+
+void Simon::FlushSequence()
+{
+    while (Sequence.size() != 0)
+    {
+        Sequence.pop_back();
     }
 }
 
@@ -68,6 +216,34 @@ int Simon::WhichIsPress(int ErrorDelay)
     return -1;
 }
 
+bool Simon::CheckSequence(int ErrorDelay)
+{
+    for (int i=0;i<Sequence.size();i++)
+    {
+        int Played = WhichIsPress(ErrorDelay);
+        if (Played != -1 && ListeTouche[Played] == Sequence[i])
+        {
+            Sequence[i].play();
+        }
+        else
+        {
+            tone(D9, 200);
+            delay(2000);
+            noTone(D9);
+
+            delay(250);
+            Sequence[i].play();
+            delay(250);
+            Sequence[i].play();
+            delay(250);
+            Sequence[i].play();
+
+            return false;
+        }
+    }
+
+    return true;
+}
 
 
 

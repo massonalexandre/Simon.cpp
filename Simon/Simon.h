@@ -13,10 +13,12 @@
 class Simon
 {
   protected :
-    std::vector<Touche> ListeTouche;
     std::vector<Touche> Sequence;
-    std::vector<Simon> ListeMode;
-    
+    std::vector<Touche> ListeTouche;
+    int ScoreMaxFacile;
+    int ScoreMaxModere;
+    int ScoreMaxExpert;
+
   public :
     /**
      * @fn Simon();
@@ -34,6 +36,21 @@ class Simon
     */
     void init(void);
     /**
+     * @fn void Facile(void)
+     * @brief Fonction de lancement de notre Simon en mode Facile
+    */
+    void Facile(int nbTours, int Speed, int ErrorDelay);
+    /**
+     * @fn void Modere(void)
+     * @brief Fonction de lancement de notre Simon en mode Modéré
+    */
+    void Modere(int nbTours, int Speed, int ErrorDelay);
+    /**
+     * @fn void Expert(void)
+     * @brief Fonction de lancement de notre Simon en mode Expert sans lumière
+    */
+    void Expert(int nbTours, int Speed, int ErrorDelay);
+     /**
      * @fn void run(void)
      * @brief Fonction de lancement de notre Simon
     */
@@ -42,26 +59,26 @@ class Simon
      * @fn Disco();
      * @brief Animation d'attente
     */    
-    virtual void Disco(int nbTours, int Speed);
+    void Disco(int nbTours, int Speed);
     /**
      * @fn GenerateSequence();
      * @brief Génère et joue la séquence de touches à retenir
     */    
-    virtual void GenerateSequence(int Speed);
+    void GenerateSequence(int Speed, int Expert);
     /**
      * @fn FlushSequence();
      * @brief Supprime la séquence
     */    
-    virtual void FlushSequence();
+    void FlushSequence();
     /**
      * @fn WhichIsPress();
      * @brief Indique quelle touche vient d'être pressée
     */    
-    virtual int WhichIsPress(int ErrorDelay);
+    int WhichIsPress(int ErrorDelay);
     /**
      * @fn CheckSequence();
      * @brief Vérifie si la touche jouée est celle de la séquence à retenir
     */    
-    virtual bool CheckSequence(int ErrorDelay);
+    bool CheckSequence(int ErrorDelay);
 };
 #endif

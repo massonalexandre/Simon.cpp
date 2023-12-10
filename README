@@ -1,1 +1,17 @@
-Fichier README please
+Projet Simon - Conception Orientée Objet avec Arduino ESP8266
+
+Ce projet a été développé dans le cadre d'un projet de 4ème année AE-SE en C++. L'objectif principal était de mettre en pratique les concepts de la Conception Orientée Objet. Le projet a été réalisé sur une carte ESP8266, à partir de l’IDE Arduino et en utilisant des composants Groove pour simplifier et accélérer le processus de développement.
+
+Fonctionnalités :
+Notre version du jeu Simon présente des caractéristiques uniques, notamment la création dynamique d'instances de touches. Cette fonctionnalité permet de jouer avec un nombre variable de touches, offrant ainsi une expérience plus flexible et personnalisée. La version jouable est accessible dans le dossier « Simon » de ce repository.
+
+Modes de Jeu :
+Cette version propose trois modes de jeu, chacun étant entièrement personnalisable en termes de temporisation, de vitesse d'affichage des séquences et de présence d'indications visuelles. Ces options offrent une gamme étendue d'intensités de jeu, s'adaptant ainsi à différents niveaux de compétence et de préférences des joueurs.
+
+Travail en Cours (SimonPlus):
+Nous avions initialement envisagé d'intégrer les modes de jeu dans des classes dérivées de simon.cpp pour permettre un contrôle avancé sur la création de niveaux supplémentaires. Malheureusement, en raison de contraintes de temps, cette fonctionnalité n'a pas été complètement implémentée. Cependant, une ébauche de ce travail est disponible dans le dossier « SimonPlus » .
+
+Nous espérons que cette version améliorée du Simon vous procurera une expérience de jeu agréable et personnalisable.
+
+Jouez bien,
+Hugo & Alex

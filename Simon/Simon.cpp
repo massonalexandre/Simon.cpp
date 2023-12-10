@@ -41,43 +41,34 @@ void Simon::init(void)
 
     Segment.init();
     Segment.set(BRIGHT_TYPICAL);
-    Segment.displayStr("LvL  B-1  R-2  Y-3 ", 500);
-    delay(2000);
+    Segment.displayStr("LeveL B1-R2-Y3", 500);
 
 }
 
 
 void Simon::run(void)
 {
-    int Jeu = 1;
-
-    while (Jeu)
-    {
-      switch (WhichIsPress(300000))
+    Segment.displayStr("PLAY");  
+      switch (WhichIsPress(3000))
       {
         case 0:
-          Facile(1,600,5000);
-          Jeu = 0;
+          Facile(1,800,3000);
           break;
         case 1:
-          Modere(2,200,1000);
-          Jeu = 0;
+          Modere(2,200,1500);
           break;
         case 2:
           Expert(3,200,2000);
-          Jeu = 0;
           break;
         default:
-          Jeu = 1;
           break;
       }
-    }
 }
 
 void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
 {
     int Test = 1;
-
+    Segment.displayStr("LVL1");
     Disco(nbTours, 0.5*Speed);
     delay(1000);
 
@@ -101,7 +92,7 @@ void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
 void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
 {
     int Test = 1;
-
+    Segment.displayStr("LVL2");
     Disco(nbTours, 0.5*Speed);
     delay(1000);
 
@@ -125,16 +116,19 @@ void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
 void Simon::Expert(int nbTours, int Speed, int ErrorDelay)
 {
     int Test = 1;
+  Segment.displayStr("LVL3");
 
     Disco(nbTours, 0.5*Speed);
-    delay(1000);
+    delay(500);
 
-    for (int i=0;i<ListeTouche.size();i++)
+    for (int i=0;i<ListeTouche.size();i++) //sequance d'ecoute pour pouvoir reconnaitre les touches
     {
       ListeTouche[i].play();
       delay(500);
     }
 
+    delay(500);
+  
     while(Test)
     {
         GenerateSequence(Speed,1);
@@ -149,12 +143,6 @@ void Simon::Expert(int nbTours, int Speed, int ErrorDelay)
     if (this->ScoreMaxExpert < 100*(Sequence.size()-1))
     {
       this->ScoreMaxExpert = 100*(Sequence.size()-1);
-    }
-
-    for (int i=0;i<Sequence.size();i++)
-    {
-      Sequence[i].play();
-      delay(Speed);
     }
     FlushSequence();
 }
@@ -201,8 +189,9 @@ void Simon::FlushSequence()
 int Simon::WhichIsPress(int ErrorDelay) 
 {
     unsigned long StartTime = millis();
-
-    while (millis()-StartTime < ErrorDelay)
+    int n=0;
+    while(n<2){
+    while (millis()-StartTime < (ErrorDelay/2)) //statégie pour retarder la sortie de boucle 
     {
         for (int i=0;i<ListeTouche.size();i++)
         {
@@ -211,6 +200,8 @@ int Simon::WhichIsPress(int ErrorDelay)
                 return i;
             }
         }
+    }
+    n+=1;
     }
 
     return -1;

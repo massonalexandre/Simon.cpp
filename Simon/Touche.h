@@ -8,6 +8,7 @@
   * @class Touche
   * @brief Classe Touche 
 */    
+extern int Buzzer;
 class Touche
 {
     private :
@@ -15,7 +16,6 @@ class Touche
     int Button; 
     int Led; 
     int Song;
-    int Buzzer;
 
     public:
     /**

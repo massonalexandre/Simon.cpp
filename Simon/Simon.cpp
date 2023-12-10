@@ -9,6 +9,10 @@
 #include <Arduino.h>
 #include "Touche.h"
 
+int Buzzer;
+TM1637 Segment(D6, D7);
+
+
 
 Simon::Simon()
 {
@@ -17,21 +21,29 @@ Simon::Simon()
     this->ScoreMaxExpert = 0;
 }
   
-Simon::~Simon()
-{
-  // Code
-  ;
-}  
+Simon::~Simon(){}
+ 
 
 void Simon::init(void)
 {
+
     Touche Bleu(D2,D1,1500 );
     Touche Rouge(D5,D3,1000);
     Touche Jaune(D4,D8,500);
+    Buzzer=D9;
+    pinMode(Buzzer, OUTPUT);
+
+
     
     ListeTouche.push_back(Bleu);
     ListeTouche.push_back(Rouge);
     ListeTouche.push_back(Jaune);
+
+    Segment.init();
+    Segment.set(BRIGHT_TYPICAL);
+    Segment.displayStr("LvL  B-1  R-2  Y-3 ", 500);
+    delay(2000);
+
 }
 
 
@@ -41,10 +53,10 @@ void Simon::run(void)
 
     while (Jeu)
     {
-      switch (WhichIsPress(30000))
+      switch (WhichIsPress(300000))
       {
         case 0:
-          Facile(1,1000,2000);
+          Facile(1,600,5000);
           Jeu = 0;
           break;
         case 1:
@@ -64,10 +76,6 @@ void Simon::run(void)
 
 void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
 {
-    TM1637 Segment(D6,D7);
-    Segment.init();
-    Segment.set(BRIGHT_TYPICAL);
-
     int Test = 1;
 
     Disco(nbTours, 0.5*Speed);
@@ -92,10 +100,6 @@ void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
 
 void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
 {
-    TM1637 Segment(D6,D7);
-    Segment.init();
-    Segment.set(BRIGHT_TYPICAL);
-
     int Test = 1;
 
     Disco(nbTours, 0.5*Speed);
@@ -120,10 +124,6 @@ void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
 
 void Simon::Expert(int nbTours, int Speed, int ErrorDelay)
 {
-    TM1637 Segment(D6,D7);
-    Segment.init();
-    Segment.set(BRIGHT_TYPICAL);
-
     int Test = 1;
 
     Disco(nbTours, 0.5*Speed);
@@ -216,7 +216,7 @@ int Simon::WhichIsPress(int ErrorDelay)
     return -1;
 }
 
-bool Simon::CheckSequence(int ErrorDelay)
+bool Simon::CheckSequence(int ErrorDelay) 
 {
     for (int i=0;i<Sequence.size();i++)
     {
@@ -227,9 +227,9 @@ bool Simon::CheckSequence(int ErrorDelay)
         }
         else
         {
-            tone(D9, 200);
+            tone(Buzzer, 200);
             delay(2000);
-            noTone(D9);
+            noTone(Buzzer);
 
             delay(250);
             Sequence[i].play();
@@ -244,6 +244,7 @@ bool Simon::CheckSequence(int ErrorDelay)
 
     return true;
 }
+
 
 
 

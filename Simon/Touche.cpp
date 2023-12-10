@@ -9,14 +9,13 @@
 
 Touche::Touche(int PinButton, int PinLed, int FreqSong)
 {
-    Buzzer = D9;
     Button = PinButton;
     Led = PinLed;
     Song = FreqSong;
 
     pinMode(Led, OUTPUT);
     pinMode(Button, INPUT);
-    pinMode(Buzzer, OUTPUT);
+   
 }
 
 void Touche::play() const

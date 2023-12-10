@@ -1,17 +1,15 @@
-Projet Simon - Conception Orientée Objet avec Arduino ESP8266
+Projet Simon - Conception OrientÃ©e Objet avec Arduino ESP8266
 
-Ce projet a été développé dans le cadre d'un projet de 4ème année AE-SE en C++. L'objectif principal était de mettre en pratique les concepts de la Conception Orientée Objet. Le projet a été réalisé sur une carte ESP8266, à partir de l’IDE Arduino et en utilisant des composants Groove pour simplifier et accélérer le processus de développement.
+Ce projet a Ã©tÃ© dÃ©veloppÃ© dans le cadre d'un projet de 4Ã¨me annÃ©e AE-SE en C++. L'objectif principal Ã©tait de mettre en pratique les concepts de la Conception OrientÃ©e Objet. Le projet a Ã©tÃ© rÃ©alisÃ© sur une carte ESP8266, Ã  partir de lâ€™IDE Arduino et en utilisant des composants Groove pour simplifier et accÃ©lÃ©rer le processus de dÃ©veloppement.
 
-Fonctionnalités :
-Notre version du jeu Simon présente des caractéristiques uniques, notamment la création dynamique d'instances de touches. Cette fonctionnalité permet de jouer avec un nombre variable de touches, offrant ainsi une expérience plus flexible et personnalisée. La version jouable est accessible dans le dossier « Simon » de ce repository.
+FonctionnalitÃ©s :
+Notre version du jeu Simon prÃ©sente des caractÃ©ristiques uniques, notamment la crÃ©ation dynamique d'instances de touches. Cette fonctionnalitÃ© permet de jouer avec un nombre variable de touches, offrant ainsi une expÃ©rience plus flexible et personnalisÃ©e. La version jouable est accessible dans le dossier Â« Simon Â» de ce repository.
 
 Modes de Jeu :
-Cette version propose trois modes de jeu, chacun étant entièrement personnalisable en termes de temporisation, de vitesse d'affichage des séquences et de présence d'indications visuelles. Ces options offrent une gamme étendue d'intensités de jeu, s'adaptant ainsi à différents niveaux de compétence et de préférences des joueurs.
+Cette version propose trois modes de jeu, chacun Ã©tant entiÃ¨rement personnalisable en termes de temporisation, de vitesse d'affichage des sÃ©quences et de prÃ©sence d'indications visuelles. Ces options offrent une gamme Ã©tendue d'intensitÃ©s de jeu, s'adaptant ainsi Ã  diffÃ©rents niveaux de compÃ©tence et de prÃ©fÃ©rences des joueurs.
 
 Travail en Cours (SimonPlus):
-Nous avions initialement envisagé d'intégrer les modes de jeu dans des classes dérivées de simon.cpp pour permettre un contrôle avancé sur la création de niveaux supplémentaires. Malheureusement, en raison de contraintes de temps, cette fonctionnalité n'a pas été complètement implémentée. Cependant, une ébauche de ce travail est disponible dans le dossier « SimonPlus » .
-
-Nous espérons que cette version améliorée du Simon vous procurera une expérience de jeu agréable et personnalisable.
+Nous avions initialement envisagÃ© d'intÃ©grer les modes de jeu dans des classes dÃ©rivÃ©es de simon.cpp pour permettre un contrÃ´le avancÃ© sur la crÃ©ation de niveaux supplÃ©mentaires. Malheureusement, en raison de contraintes de temps, cette fonctionnalitÃ© n'a pas Ã©tÃ© complÃ¨tement implÃ©mentÃ©e. Cependant, une Ã©bauche de ce travail est disponible dans le dossier Â« SimonPlus Â» .
 
 Jouez bien,
 Hugo & Alex

@@ -12,9 +12,13 @@
 */    
 class Simon
 {
-  private :
+  protected :
     std::vector<Touche> Sequence;
     std::vector<Touche> ListeTouche;
+    int ScoreMaxFacile;
+    int ScoreMaxModere;
+    int ScoreMaxExpert;
+
   public :
     /**
      * @fn Simon();
@@ -32,6 +36,21 @@ class Simon
     */
     void init(void);
     /**
+     * @fn void Facile(void)
+     * @brief Fonction de lancement de notre Simon en mode Facile
+    */
+    void Facile(int nbTours, int Speed, int ErrorDelay);
+    /**
+     * @fn void Modere(void)
+     * @brief Fonction de lancement de notre Simon en mode Modéré
+    */
+    void Modere(int nbTours, int Speed, int ErrorDelay);
+    /**
+     * @fn void Expert(void)
+     * @brief Fonction de lancement de notre Simon en mode Expert sans lumière
+    */
+    void Expert(int nbTours, int Speed, int ErrorDelay);
+     /**
      * @fn void run(void)
      * @brief Fonction de lancement de notre Simon
     */
@@ -45,7 +64,7 @@ class Simon
      * @fn GenerateSequence();
      * @brief Génère et joue la séquence de touches à retenir
     */    
-    void GenerateSequence(int Speed);
+    void GenerateSequence(int Speed, int Expert);
     /**
      * @fn FlushSequence();
      * @brief Supprime la séquence

@@ -9,6 +9,10 @@
 #include <Arduino.h>
 #include "Touche.h"
 
+int Buzzer;
+TM1637 Segment(D6, D7);
+
+
 
 Simon::Simon()
 {
@@ -17,59 +21,54 @@ Simon::Simon()
     this->ScoreMaxExpert = 0;
 }
   
-Simon::~Simon()
-{
-  // Code
-  ;
-}  
+Simon::~Simon(){}
+ 
 
 void Simon::init(void)
 {
+
     Touche Bleu(D2,D1,1500 );
     Touche Rouge(D5,D3,1000);
     Touche Jaune(D4,D8,500);
+    Buzzer=D9;
+    pinMode(Buzzer, OUTPUT);
+
+
     
     ListeTouche.push_back(Bleu);
     ListeTouche.push_back(Rouge);
     ListeTouche.push_back(Jaune);
+
+    Segment.init();
+    Segment.set(BRIGHT_TYPICAL);
+    Segment.displayStr("LeveL B1-R2-Y3", 500);
+
 }
 
 
 void Simon::run(void)
 {
-    int Jeu = 1;
-
-    while (Jeu)
-    {
-      switch (WhichIsPress(30000))
+    Segment.displayStr("PLAY");  
+      switch (WhichIsPress(3000))
       {
         case 0:
-          Facile(1,1000,2000);
-          Jeu = 0;
+          Facile(1,800,3000);
           break;
         case 1:
-          Modere(2,200,1000);
-          Jeu = 0;
+          Modere(2,200,1500);
           break;
         case 2:
           Expert(3,200,2000);
-          Jeu = 0;
           break;
         default:
-          Jeu = 1;
           break;
       }
-    }
 }
 
 void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
 {
-    TM1637 Segment(D6,D7);
-    Segment.init();
-    Segment.set(BRIGHT_TYPICAL);
-
     int Test = 1;
-
+    Segment.displayStr("LVL1");
     Disco(nbTours, 0.5*Speed);
     delay(1000);
 
@@ -92,12 +91,8 @@ void Simon::Facile(int nbTours, int Speed, int ErrorDelay)
 
 void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
 {
-    TM1637 Segment(D6,D7);
-    Segment.init();
-    Segment.set(BRIGHT_TYPICAL);
-
     int Test = 1;
-
+    Segment.displayStr("LVL2");
     Disco(nbTours, 0.5*Speed);
     delay(1000);
 
@@ -120,21 +115,20 @@ void Simon::Modere(int nbTours, int Speed, int ErrorDelay)
 
 void Simon::Expert(int nbTours, int Speed, int ErrorDelay)
 {
-    TM1637 Segment(D6,D7);
-    Segment.init();
-    Segment.set(BRIGHT_TYPICAL);
-
     int Test = 1;
+  Segment.displayStr("LVL3");
 
     Disco(nbTours, 0.5*Speed);
-    delay(1000);
+    delay(500);
 
-    for (int i=0;i<ListeTouche.size();i++)
+    for (int i=0;i<ListeTouche.size();i++) //sequance d'ecoute pour pouvoir reconnaitre les touches
     {
       ListeTouche[i].play();
       delay(500);
     }
 
+    delay(500);
+  
     while(Test)
     {
         GenerateSequence(Speed,1);
@@ -149,12 +143,6 @@ void Simon::Expert(int nbTours, int Speed, int ErrorDelay)
     if (this->ScoreMaxExpert < 100*(Sequence.size()-1))
     {
       this->ScoreMaxExpert = 100*(Sequence.size()-1);
-    }
-
-    for (int i=0;i<Sequence.size();i++)
-    {
-      Sequence[i].play();
-      delay(Speed);
     }
     FlushSequence();
 }
@@ -201,8 +189,9 @@ void Simon::FlushSequence()
 int Simon::WhichIsPress(int ErrorDelay) 
 {
     unsigned long StartTime = millis();
-
-    while (millis()-StartTime < ErrorDelay)
+    int n=0;
+    while(n<2){
+    while (millis()-StartTime < (ErrorDelay/2)) //statégie pour retarder la sortie de boucle 
     {
         for (int i=0;i<ListeTouche.size();i++)
         {
@@ -212,11 +201,13 @@ int Simon::WhichIsPress(int ErrorDelay)
             }
         }
     }
+    n+=1;
+    }
 
     return -1;
 }
 
-bool Simon::CheckSequence(int ErrorDelay)
+bool Simon::CheckSequence(int ErrorDelay) 
 {
     for (int i=0;i<Sequence.size();i++)
     {
@@ -227,9 +218,9 @@ bool Simon::CheckSequence(int ErrorDelay)
         }
         else
         {
-            tone(D9, 200);
+            tone(Buzzer, 200);
             delay(2000);
-            noTone(D9);
+            noTone(Buzzer);
 
             delay(250);
             Sequence[i].play();
@@ -244,6 +235,7 @@ bool Simon::CheckSequence(int ErrorDelay)
 
     return true;
 }
+
 
 
 
